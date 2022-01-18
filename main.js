@@ -2,12 +2,13 @@ class Calculator {
     constructor(topDisplay, bottomDisplay) {
         this.topDisplay_div = topDisplay;
         this.bottomDisplay_div = bottomDisplay;
+        this.clear();
     }
 
     clear() {
-        this.bottomDisplay_div = '';
-        this.topDisplay_div = '';
-        this.currentOperator = undefined;
+        this.currentOperand = '';
+        this.previousOperand = '';
+        this.operator = undefined;
     }
 
     delete() {
@@ -15,11 +16,18 @@ class Calculator {
     }
 
     appendNumber(number) {
+        if (number === '.' && this.currentOperand.includes('.')) return
         this.currentOperand = this.currentOperand.toString() + number.toString();
     }
 
     chooseOperator(operator) {
-
+        if (this.currentOperand === '') return
+        if (this.previousOperand !== '') {
+            this.compute();
+        }
+        this.operator = operator;
+        this.previousOperand = this.currentOperand /*+ operator;*/
+        this.currentOperand = '';
     }
 
     compute() {
@@ -28,7 +36,7 @@ class Calculator {
 
     updateDisplay()  {
         this.bottomDisplay_div.innerText = this.currentOperand;
-
+        this.topDisplay_div.innerText = this.previousOperand;
     }
 }
 
@@ -47,4 +55,11 @@ number_buttons.forEach(button => {
         calculator.appendNumber(button.innerText);
         calculator.updateDisplay();
     });
+})
+
+operator_buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.chooseOperator(button.innerText);
+        calculator.updateDisplay();
+    })
 })
