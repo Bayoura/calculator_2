@@ -26,7 +26,7 @@ class Calculator {
             this.compute();
         }
         this.operator = operator;
-        this.previousOperand = this.currentOperand + ' ' + operator;
+        this.previousOperand = this.currentOperand;
         this.currentOperand = '';
     }
 
@@ -85,7 +85,7 @@ class Calculator {
         if (this.operator == null) {
             this.topDisplay_div.innerText = '';
         } else {
-            this.topDisplay_div.innerText = this.getDisplayNumber(this.previousOperand);
+            this.topDisplay_div.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operator}`;
         }
     }
 }
